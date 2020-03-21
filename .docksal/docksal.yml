@@ -1,0 +1,26 @@
+version: '2.1'
+
+services:
+  redis:
+    container_name: sh_redis
+    image: redis:5
+    ports:
+      - 6379:6379
+  mongo:
+    container_name: sh_mongo
+    image: mongo:latest
+    ports:
+      - 27017:27017
+  app:
+    container_name: app
+    depends_on:
+      - redis
+    image: node:latest
+    command: npm start
+    volumes:
+      - ${PROJECT_ROOT}:/code
+    ports:
+      - 80:80
+    environment:
+      - NODE_ENV
+      - DEBUG_MODE
